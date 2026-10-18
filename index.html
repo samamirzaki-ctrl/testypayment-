@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درگاه پرداخت اینترنتی (تست)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .payment-container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        /* بخش نمایش کارت */
+        .card-carousel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .card-arrow {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .card-display {
+            background: linear-gradient(135deg, #e0e0e0 0%, #f9f9f9 100%);
+            border-radius: 10px;
+            width: 250px;
+            height: 140px;
+            position: relative;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card-logo {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 25px;
+            background-color: #2b7de1;
+            border-radius: 4px;
+        }
+
+        .card-number-display {
+            position: absolute;
+            bottom: 50px;
+            right: 20px;
+            font-family: monospace;
+            font-size: 16px;
+            color: #333;
+            direction: ltr;
+        }
+
+        /* فرم‌ها */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #555;
+            font-weight: 700;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+            direction: ltr; /* برای اعداد انگلیسی */
+            text-align: left;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #2b7de1;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            color: #888;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .row .form-group {
+            flex: 1;
+        }
+
+        /* کپچا */
+        .captcha-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .captcha-image {
+            background-color: #e9ecef;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #000080;
+            font-style: italic;
+            text-decoration: line-through;
+            user-select: none;
+        }
+
+        /* چک‌باکس */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        /* دکمه‌ها */
+        .button-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-cancel {
+            background-color: #e53935;
+        }
+
+        .btn-pay {
+            background-color: #00c853;
+        }
+
+        .dynamic-pass-btn {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-container">
+    <!-- بخش نمایش کارت -->
+    <div class="card-carousel">
+        <button class="card-arrow">&#10095;</button>
+        <div class="card-display">
+            <div class="card-logo"></div>
+            <div class="card-number-display"></div>
+        </div>
+        <button class="card-arrow">&#10094;</button>
+    </div>
+
+    <!-- شماره کارت -->
+    <div class="form-group">
+        <label>شماره کارت</label>
+        <div class="input-wrapper">
+            <input type="text" readonly>
+            <span class="input-icon">⌨</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- تاریخ انقضا -->
+        <div class="form-group">
+            <label>تاریخ انقضاء</label>
+            <div class="input-wrapper">
+                <input type="text" placeholder="ماه / سال" value="" style="text-align: center;">
+            </div>
+        </div>
+        
+        <!-- CVV2 -->
+        <div class="form-group">
+            <label>CVV2</label>
+            <div class="input-wrapper">
+                <input type="password" placeholder="CVV2">
+                <span class="input-icon">⌨</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- کد امنیتی -->
+    <div class="form-group">
+        <label>کد امنیتی</label>
+        <div class="captcha-group">
+            <div class="input-wrapper" style="flex: 1;">
+                <input type="text" placeholder="کد امنیتی">
+            </div>
+            <div class="captcha-image">26958</div>
+            <button style="background:none; border:none; cursor:pointer;">🔊</button>
+            <button style="background:none; border:none; cursor:pointer;">🔄</button>
+        </div>
+    </div>
+
+    <!-- رمز دوم -->
+    <div class="form-group">
+        <label>رمز دوم</label>
+        <div class="input-wrapper">
+            <input type="password" placeholder="رمز دوم خود را وارد کنید">
+            <button class="dynamic-pass-btn">درخواست رمز پویا</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- ایمیل -->
+        <div class="form-group">
+            <label>ایمیل (اختیاری)</label>
+            <input type="email" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box;">
+        </div>
+        
+        <!-- تلفن همراه -->
+        <div class="form-group">
+            <label>تلفن همراه (اختیاری)</label>
+            <input type="tel" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box;">
+        </div>
+    </div>
+
+    <!-- چک باکس -->
+    <label class="checkbox-group">
+        <input type="checkbox" checked>
+        شماره کارت و تاریخ انقضاء را در درگاه‌های بانک پارسیان ذخیره کن
+    </label>
+
+    <!-- دکمه‌های عملیات -->
+    <div class="button-group">
+        <button class="btn btn-cancel">انصراف</button>
+        <button class="btn btn-pay">پرداخت</button>
+    </div>
+</div>
+
+</body>
+</html>
